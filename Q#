@@ -1,0 +1,5 @@
+operation SetQubitState(desired : Result, target : Qubit) : Unit {
+    if desired != M(target) {
+        X(target);
+    }
+}
