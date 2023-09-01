@@ -124,3 +124,33 @@
 #(struct:object:canvas% ...)
 
 
+(expand top-level-form [insp]) → syntax?
+  top-level-form : any/c
+  insp : inspector? = (current-code-inspector)
+
+(parameterize ([current-namespace (make-base-namespace)])
+ (expand
+  (datum->syntax
+   #f
+   '(module foo scheme
+      (define a 3)
+      (+ a 4)))))
+
+(define-namespace-anchor anchor)
+(parameterize ([current-namespace
+                (namespace-anchor->namespace anchor)])
+ (expand
+  (datum->syntax
+   #f
+   '(delay (+ 1 2)))))
+
+	#:preserve-property-keys preserve-property-keys	 
+ 	 [	#:provides-namespace provides-namespace	 
+ 	 	#:base-module-path-index base-module-path-index])	 
+ → any/c
+  stx : syntax?
+  preserve-property-keys : (listof symbol?)
+  	provides-namespace	 	:	 	(or/c namespace? #f)
+ 	 	 	=	 	(current-namespace)
+  base-module-path-index : (or/c module-path-index? #f) = #f
+
